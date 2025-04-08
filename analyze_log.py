@@ -13,13 +13,34 @@ def analyze_log_file(filename="access.log"):
     """
 
     try:
+        with open(filename, "r") as file:
+            log_lines = file.readlines()
         # open the access.log file and read the lines into a list (ideally named log_lines if you want to use the code from the instruction page)
-        pass  #remove this line when you start coding
     except FileNotFoundError:
         print(f"Error: Log file '{filename}' not found.")
         return
-
+    
+    error_count = 0
+    unique_ips = set()
+    url_count = {}
     # set up variables to store the datetime, error count, unique IPs, and URL counts for the log file.
+    
+    for line in log_lines:
+        timestamp, ip, url, status_code = extract_log_data(line)
+        if all([timestamp, ip, url, status_code]):
+            unique_ips.add(ip)
+            if url in url_count:
+                url_counts += 1
+            else:
+                url_counts = 1
+            if int(status_code) >= 400:
+                error_count += 1
+
+    print(f"Total Errors (4xx and 5xx): {error_count}")
+    print(f"Unique IP Addresses: {len(unique_ips)}")
+    print("URL Access Counts:")
+    for url, count in url_counts.items():
+        print(f"    {url}: {count}")
 
     # a.  loop through each line in the log file.  This would be the log_lines list if you opened the log the same way as in the instructions.  
     # b.  inside this loop, first extract the log data using the extract_log_data function or the regular expression given in the instructions.
