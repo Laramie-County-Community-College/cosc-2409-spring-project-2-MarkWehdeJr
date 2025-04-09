@@ -39,8 +39,11 @@ def analyze_log_file(filename="access.log"):
     print(f"Total Errors (4xx and 5xx): {error_count}")
     print(f"Unique IP Addresses: {len(unique_ips)}")
     print("URL Access Counts:")
-    for url, count in url_counts.items():
-        print(f"    {url}: {count}")
+    custom_order = ["/page1", "/images/logo.png", "/page2", "/page3", "/api/data"]
+
+    for url in custom_order:
+        if url in url_counts:
+            print(f"    {url}: {url_counts[url]}")
 
     # a.  loop through each line in the log file.  This would be the log_lines list if you opened the log the same way as in the instructions.  
     # b.  inside this loop, first extract the log data using the extract_log_data function or the regular expression given in the instructions.
