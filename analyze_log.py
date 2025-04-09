@@ -22,17 +22,17 @@ def analyze_log_file(filename="access.log"):
     
     error_count = 0
     unique_ips = set()
-    url_count = {}
+    url_counts = {}
     # set up variables to store the datetime, error count, unique IPs, and URL counts for the log file.
     
     for line in log_lines:
         timestamp, ip, url, status_code = extract_log_data(line)
         if all([timestamp, ip, url, status_code]):
             unique_ips.add(ip)
-            if url in url_count:
-                url_counts += 1
+            if url in url_counts:
+                url_counts[url] += 1
             else:
-                url_counts = 1
+                url_counts[url] = 1
             if int(status_code) >= 400:
                 error_count += 1
 
